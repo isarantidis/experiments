@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<local.glassfish.home>E:\Glassfish4\glassfish</local.glassfish.home>
+		<local.glassfish.home>C:\JOB\Servers\glassfish4\glassfish</local.glassfish.home>
 		<local.glassfish.user>admin</local.glassfish.user>
 		<local.glassfish.domain>domain1</local.glassfish.domain>
 		<local.glassfish.passfile>
@@ -23,6 +23,7 @@
 			<artifactId>chesar-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- Added to avoid glassfish/spring boot incompatibility -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>

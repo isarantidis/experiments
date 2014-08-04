@@ -3,10 +3,8 @@ package org.semmellitis.chesar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
+import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
+import org.springframework.boot.autoconfigure.velocity.VelocityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,8 +15,8 @@ import reactor.spring.context.config.EnableReactor;
 @Import({Persistence.class, EventConfig.class})
 @ComponentScan("org.semmellitis")
 @EnableReactor
-@EnableAutoConfiguration(exclude={BatchAutoConfiguration.class, MongoAutoConfiguration.class,
-		ThymeleafAutoConfiguration.class,SolrAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {FreeMarkerAutoConfiguration.class,
+    VelocityAutoConfiguration.class})
 public class Application {
 
   public static void main(String[] args) {
