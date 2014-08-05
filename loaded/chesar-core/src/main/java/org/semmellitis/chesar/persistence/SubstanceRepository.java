@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SubstanceRepository extends JpaRepository<Substance, String> {
 
-	Substance findByUuid(String uuid);
+  Substance findByUuid(String uuid);
 
 }

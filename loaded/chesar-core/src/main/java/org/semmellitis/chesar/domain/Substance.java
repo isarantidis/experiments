@@ -1,10 +1,16 @@
 package org.semmellitis.chesar.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import org.semmellitis.chesar.annotation.BusinessKey;
@@ -21,14 +27,54 @@ public class Substance {
   @Column(unique = true)
   private String uuid;
 
+  @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+  @JoinColumn
+  private Set<ChemicalEntity> chemicalEntities;
+
   @SuppressWarnings("unused")
   private Substance() {};
 
   public Substance(String uuid) {
     this.uuid = uuid;
+    addChemicalEntity(new ChemicalEntity(uuid));
   }
 
   public String getUuid() {
     return uuid;
+  }
+
+  public void addChemicalEntity(ChemicalEntity chem) {
+    getChemicalEntities().add(chem);
+  }
+
+  private Set<ChemicalEntity> getChemicalEntities() {
+    if (chemicalEntities == null) {
+      chemicalEntities = new HashSet<ChemicalEntity>();
+    }
+    return chemicalEntities;
+  }
+
+  long getId() {
+    return id;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    if (obj.getClass() != getClass()) {
+      return false;
+    }
+    Substance rhs = (Substance) obj;
+    return uuid.equals(rhs.uuid);
+  }
+
+  @Override
+  public int hashCode() {
+    return 31 * 1 + uuid.hashCode();
   }
 }
