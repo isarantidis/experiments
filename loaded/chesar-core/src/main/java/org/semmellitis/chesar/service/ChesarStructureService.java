@@ -3,6 +3,7 @@ package org.semmellitis.chesar.service;
 import javax.transaction.Transactional;
 
 import org.semmellitis.chesar.domain.ChesarStructureEntry;
+import org.semmellitis.chesar.domain.CsaAddedEvent;
 import org.semmellitis.chesar.domain.SubstanceCreatedEvent;
 import org.semmellitis.chesar.persistence.ChesarStructureEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,15 @@ public class ChesarStructureService {
     ChesarStructureEntry entry =
         new ChesarStructureEntry(eve.getSubstanceId(), "Substance", eve.getSubstanceId(),
             "Substance");
+    repository.save(entry);
+  }
+
+  @Selector(value = "ADD_CSA_COMMAND", reactor = "@rootReactor")
+  @Transactional(value = Transactional.TxType.MANDATORY)
+  public void handleCsaAdded(Event<CsaAddedEvent> event) {
+    CsaAddedEvent eve = event.getData();
+    ChesarStructureEntry entry =
+        new ChesarStructureEntry(eve.getSubstanceId(), "Substance", eve.getCsaId(), "Csa");
     repository.save(entry);
   }
 }

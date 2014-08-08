@@ -85,9 +85,9 @@ public class ChesarStructureEntry {
     public int hashCode() {
       int prime = 31;
       int result = 1;
-      result = prime * result + Long.valueOf(parentId).hashCode();
+      result = (int) (prime * result + parentId);
       result = prime * result + parentType.hashCode();
-      result = prime * result + Long.valueOf(childId).hashCode();
+      result = (int) (prime * result + childId);
       result = prime * result + childType.hashCode();
       return result;
     }

@@ -21,15 +21,19 @@ public class Substance {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "substance-sec")
   @SequenceGenerator(name = "substance-sec", sequenceName = "SUBSTANCE_SEC", initialValue = 1,
       allocationSize = 12)
-  private long id;
+  private Long id;
 
   @BusinessKey
   @Column(unique = true)
   private String uuid;
 
   @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
-  @JoinColumn
+  @JoinColumn(updatable = false, nullable = false)
   private Set<ChemicalEntity> chemicalEntities;
+
+  @OneToMany(orphanRemoval = true, targetEntity = Csa.class)
+  @JoinColumn(name = "substanceId", updatable = false, nullable = false)
+  private Set<Long> csas;
 
   @SuppressWarnings("unused")
   private Substance() {};
@@ -54,7 +58,7 @@ public class Substance {
     return chemicalEntities;
   }
 
-  long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -76,5 +80,16 @@ public class Substance {
   @Override
   public int hashCode() {
     return 31 * 1 + uuid.hashCode();
+  }
+
+  private Set<Long> getCsas() {
+    if (csas == null) {
+      csas = new HashSet<>();
+    }
+    return csas;
+  }
+
+  public void addCsa(Csa csa) {
+    getCsas().add(csa.getId());
   }
 }
