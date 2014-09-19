@@ -1,0 +1,7 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/.gwt/
+/myTest-dev.launch
+/myTest-prod.launch

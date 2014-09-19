@@ -1,18 +1,16 @@
 package org.semmellitis.chesar;
 
-import static org.hamcrest.Matchers.hasSize;
-
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.semmellitis.chesar.domain.Csa;
-import org.semmellitis.chesar.domain.CsaAddedEvent;
+import org.semmellitis.chesar.command.GreetCommand;
 import org.semmellitis.chesar.domain.Substance;
 import org.semmellitis.chesar.domain.SubstanceCreatedEvent;
 import org.semmellitis.chesar.persistence.CsaRepository;
 import org.semmellitis.chesar.persistence.SubstanceRepository;
+import org.semmellitis.chesar.service.ChemicalEntityCommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -34,7 +32,7 @@ public class IntegrationTest {
   private Reactor rootReactor;
 
   @Autowired
-  private Reactor asyncReactor;
+  private ChemicalEntityCommandHandler cec;
 
   @Test
   @Transactional
@@ -49,16 +47,6 @@ public class IntegrationTest {
   @Test
   @Transactional
   public void addCsa() {
-    Substance sub = new Substance("dd");
-    substanceRepository.save(sub);
-    rootReactor.notify("CREATE_SUBSTANCE_COMMAND",
-        Event.<SubstanceCreatedEvent>wrap(new SubstanceCreatedEvent(sub)));
-    Substance sub2 = substanceRepository.findByUuid("dd");
-    Csa csa = new Csa("fast");
-    sub2.addCsa(csa);
-    substanceRepository.save(sub2);
-    csaRepository.save(csa);
-    rootReactor.notify("ADD_CSA_COMMAND", Event.<CsaAddedEvent>wrap(new CsaAddedEvent(csa)));
-    Assert.assertThat(csaRepository.findBySubstanceId(sub2.getId()), hasSize(1));
+    rootReactor.notify("greet", Event.<GreetCommand>wrap(new GreetCommand()));
   }
 }

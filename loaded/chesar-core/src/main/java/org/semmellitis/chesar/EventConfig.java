@@ -14,8 +14,4 @@ public class EventConfig {
     return Reactors.reactor().env(env).dispatcher("sync").get();
   }
 
-  @Bean
-  public Reactor asyncReactor(Environment env) {
-    return Reactors.reactor().env(env).dispatcher("ringBuffer").get();
-  }
 }
