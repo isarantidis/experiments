@@ -2,13 +2,13 @@ package org.semmellitis.chesar.domain;
 
 
 public class CsaAddedEvent {
-  private long substanceId;
+  private Long substanceId;
 
   private Long csaId;
 
   public CsaAddedEvent(Csa csa) {
     this.csaId = csa.getId();
-    this.substanceId = csa.getSubstanceId();
+    this.substanceId = csa.getSubstance().getId();
   }
 
   public long getSubstanceId() {

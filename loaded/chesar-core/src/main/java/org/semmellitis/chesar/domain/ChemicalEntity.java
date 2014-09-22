@@ -48,7 +48,4 @@ public class ChemicalEntity {
     return 31 * 1 + uuid.hashCode();
   }
 
-  long getId() {
-    return id;
-  }
 }

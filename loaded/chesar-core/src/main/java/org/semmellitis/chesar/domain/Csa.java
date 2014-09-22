@@ -2,7 +2,9 @@ package org.semmellitis.chesar.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,11 @@ import javax.persistence.SequenceGenerator;
 public class Csa implements Serializable {
 
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -5099762721768766803L;
+
   @Id
   @SequenceGenerator(name = "csa-sec", sequenceName = "CSA_SEC", initialValue = 1,
       allocationSize = 12)
@@ -22,21 +29,22 @@ public class Csa implements Serializable {
 
   private String name;
 
-  @ManyToOne(targetEntity = Substance.class)
-  private long substanceId;
+  @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+  private Substance substance;
 
   private Csa() {}
 
-  public Csa(String name) {
+  public Csa(Substance substance, String name) {
     this.name = name;
+    this.substance = substance;
   }
 
   public Long getId() {
     return id;
   }
 
-  public long getSubstanceId() {
-    return substanceId;
+  public Substance getSubstance() {
+    return substance;
   }
 
   @Override

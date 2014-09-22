@@ -1,11 +1,12 @@
 package org.semmellitis.chesar;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.transaction.Transactional;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.semmellitis.chesar.command.GreetCommand;
+import org.semmellitis.chesar.domain.Csa;
 import org.semmellitis.chesar.domain.Substance;
 import org.semmellitis.chesar.domain.SubstanceCreatedEvent;
 import org.semmellitis.chesar.persistence.CsaRepository;
@@ -41,12 +42,16 @@ public class IntegrationTest {
     substanceRepository.save(sub);
     rootReactor.notify("CREATE_SUBSTANCE_COMMAND",
         Event.<SubstanceCreatedEvent>wrap(new SubstanceCreatedEvent(sub)));
-    Assert.assertNotNull(substanceRepository.findByUuid("dd"));
+    assertThat(substanceRepository.findByUuid("dd")).isNotNull();
   }
 
   @Test
   @Transactional
   public void addCsa() {
-    rootReactor.notify("greet", Event.<GreetCommand>wrap(new GreetCommand()));
+    Substance sub = new Substance("dd");
+    substanceRepository.save(sub);
+    Csa csa = new Csa(sub, "fff");
+    csaRepository.save(csa);
+    assertThat(csaRepository.findBySubstanceId(sub.getId())).hasSize(1);
   }
 }

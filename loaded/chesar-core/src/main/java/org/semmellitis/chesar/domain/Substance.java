@@ -28,11 +28,10 @@ public class Substance {
   private String uuid;
 
   @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
-  @JoinColumn(updatable = false, nullable = false)
+  @JoinColumn(name = "substance_id", updatable = false, nullable = false)
   private Set<ChemicalEntity> chemicalEntities;
 
-  @OneToMany(orphanRemoval = true, targetEntity = Csa.class)
-  @JoinColumn(name = "substanceId", updatable = false, nullable = false)
+  @OneToMany(mappedBy = "substance", orphanRemoval = true, targetEntity = Csa.class)
   private Set<Long> csas;
 
   @SuppressWarnings("unused")
@@ -82,14 +81,4 @@ public class Substance {
     return 31 * 1 + uuid.hashCode();
   }
 
-  private Set<Long> getCsas() {
-    if (csas == null) {
-      csas = new HashSet<>();
-    }
-    return csas;
-  }
-
-  public void addCsa(Csa csa) {
-    getCsas().add(csa.getId());
-  }
 }
